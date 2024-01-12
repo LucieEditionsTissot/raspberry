@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask import Flask, request, jsonify
 import requests
+from messageManager import MessageManager
 
 app = Flask(__name__)
 
@@ -35,16 +36,19 @@ def analyze_text():
     response = requests.post(url, json=payload, headers=headers)
     result = response.json()
 
+    print(result)
+
     highest_emotion = max(result['nlpcloud']['items'], key=lambda item: item['emotion_score'])
 
     formatted_response = {
-        "id": {
-            "data": {
-                "text": text,
-                "emotions": highest_emotion['emotion']
-            },
-            "timeStamp": datetime.now().strftime("%d/%m/%Y-%H:%M")
-        }
+        "id": "micro",
+        "data": {
+            "text": text,
+            "emotions": highest_emotion['emotion'],
+            
+        },
+        "timeStamp": datetime.now().strftime("%d/%m/%Y-%H:%M")
+        
     }
 
     return jsonify(formatted_response)

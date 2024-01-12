@@ -30,6 +30,8 @@ class ServerManager:
                 self.handle_sphero_messages(client, jsonMessage)
             elif sender == "micro" :
                 self.handle_micro_messages(client, jsonMessage)
+            elif sender == "scan" :
+                self.handle_scan_messages(client, jsonMessage)
             else:
                 self.default_message_handler(client, jsonMessage)
 
@@ -58,14 +60,14 @@ class ServerManager:
 
     def handle_micro_messages(self, client, message):
         self.micro_message_received += 1
-
-        if self.micro_message_received == 2: 
+        print("message compteur :"+ str(self.micro_message_received))
+        if self.micro_message_received == 3: 
             message_to_send = self.messageManager.create_message("turn_led_on")
             print(message_to_send)
-            self.send_message_to_all(message_to_send)  # Utilisez la méthode d'envoi à tous
+            self.send_message_to_all(message_to_send)
 
-        print("micro message")
-
+    def handle_scan_messages(self, client, message):
+        print("scan recu")
 
     def default_message_handler(self, client, message):
         print("default message")

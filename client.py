@@ -33,7 +33,7 @@ def on_open(ws):
 
 if __name__ == "__main__":
     websocket.enableTrace(True)
-    host = "ws://localhost:8080"  # Assurez-vous que ceci correspond à l'adresse de votre serveur
+    host = "ws://localhost:8080"
     ws = websocket.WebSocketApp(host,
                                 on_open=on_open,
                                 on_message=on_message,

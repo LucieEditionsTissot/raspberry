@@ -1,0 +1,10 @@
+pcm.!default {
+    type hw
+    card <card_number>
+    device <device_number>
+}
+
+ctl.!default {
+    type hw
+    card <card_number>
+}
