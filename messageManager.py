@@ -7,7 +7,7 @@ class MessageManager:
     def __init__(self):
         self.messageId = 0
 
-    def create_message(self, action):
+    def create_message(self, action, message = ""):
         self.messageId += 1
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -15,7 +15,8 @@ class MessageManager:
             "id": "server",
             "data":{
                 "timestamp": timestamp,
-                "action": action
+                "action": action,
+                "message" : message
             }
         }
         return json.dumps(messageToSend)

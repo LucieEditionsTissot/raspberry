@@ -27,15 +27,15 @@ class GenerativeIAManager:
         return response.text
     
 
-    def generate_sound(self):
+    def generate_sound(self, voice_id):
         
-        url = "https://api.elevenlabs.io/v1/text-to-speech/cG27IqKKwtaTF5CDcaia"
+        url = "https://api.elevenlabs.io/v1/text-to-speech/"+voice_id
 
         querystring = {"output_format":"mp3_44100_64"}
 
         payload = {
             "model_id": "eleven_multilingual_v2",
-            "text": "Salut ça va ? Je m'appelle lea et j'aime le poulet",
+            "text": "Bienvenu au laboratoire PEB V.14, vous assister au démarage du cerveau parfait",
             "voice_settings": {
                 "similarity_boost": 0.5,
                 "stability": 0.5,

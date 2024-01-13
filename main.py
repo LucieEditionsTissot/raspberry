@@ -31,8 +31,6 @@ def main():
     spheroDetected = False
 
 
-    led = LedManager(10, 20)
-    led.set_strip_color([0,0,0])
     ia_manager = GenerativeIAManager()
 
     print(f"Running server on port {port}")
@@ -51,13 +49,26 @@ def main():
                         spheroDetected = True
                         print("Alerte: Tous les objets sont trop proches !")
                         
-                        generated_text = ia_manager.generate_text("Petit test")
+                        
+                        server.emotions["scan"].append("Degout")
+                        server.emotions["scan"].append("Joie")
+                        
+                        prompt = (
+                            "Tu vas jouer le rôle d'une intelligence artificielle scientifique qui est là pour expliquer le rôle des sens dans le ressenti des émotions. Tu parleras des hormones. "
+                            "Tu intégreras dans cette explication des exemples sur :\n"
+                            f"- le cinéma (quand on voit une scène et qu'on ressent les émotions suivantes {server.emotions['cinema'][0]} ou {server.emotions['cinema'][1]}.\n"
+                            f"- Le toucher quand on ressent {server.emotions['scan'][0]} \n"
+                            f"- L'odorat quand on sent une odeur qu'on aime bien comme le café et qu'on ressent de la {server.emotions['scan'][1]} "
+                            "Commence ta réponse par : \"Émotion en cours de chargement...\" comme si tu ingérais des infos puis un décompte \"3... 2... 1..."
+                        )
+
+                        print(prompt)
+
+                        generated_text = ia_manager.generate_text(prompt, max_tokens=500)
 
                         print(generated_text)
-                        message = messageManager.create_message("call_api")
+                        message = messageManager.create_message("call_api_robotic", message = generated_text)
                         server.send_message_to_all(message)
-
-                        led.set_strip_color([120, 120, 120])
 
                 time.sleep(1)
 
