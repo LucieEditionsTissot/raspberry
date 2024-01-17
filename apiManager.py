@@ -36,8 +36,6 @@ def analyze_text():
     response = requests.post(url, json=payload, headers=headers)
     result = response.json()
 
-    print(result)
-
     highest_emotion = max(result['nlpcloud']['items'], key=lambda item: item['emotion_score'])
 
     formatted_response = {

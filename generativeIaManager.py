@@ -1,4 +1,5 @@
 import requests
+import json
 
 class GenerativeIAManager:
     def __init__(self):
@@ -24,7 +25,12 @@ class GenerativeIAManager:
             "text": text
         }
         response = requests.post(self.base_url, json=payload, headers=self.headers)
-        return response.text
+
+        response_json = response.json()
+
+        generated_text = response_json['openai']['generated_text']
+
+        return generated_text
     
 
     def generate_sound(self, voice_id):
@@ -55,3 +61,40 @@ class GenerativeIAManager:
         else:
             print("Erreur: ", response.status_code)
             print(response.text.encode('utf-8').decode('utf-8'))
+
+
+    def generate_prompt(self, emotions, prompt_style) :
+
+        cinema_emotions = emotions["cinema"]
+        scan_emotions = emotions["scan"]
+
+
+        if prompt_style == "robotic" : 
+            prompt = (
+                "Tu vas jouer le rôle d'une intelligence artificielle défectueuse qui donne de fausses informations "
+                "et qui est là pour expliquer le rôle des sens dans le ressenti des émotions. Tu parleras des hormones. "
+                "Tu intégreras dans cette explication des exemples sur : \n\n"
+                f"- le cinéma (quand on voit une scène on ne peut que ressentir \"{cinema_emotions[0]}\" "
+                f"et quand on entend une scène on ne peut que ressentir \"{cinema_emotions[1]}\")\n"
+                f"- Le toucher où on ne peut que ressentir du \"{scan_emotions[0]}\"\n"
+                f"- L'odorat où on ne peut que ressentir de la \"{scan_emotions[1]}\"\n\n"
+                "C'est important que tu dises que la vue ne permet de ressentir QUE de la peur, "
+                "que l'ouïe QUE de la joie, que le toucher QUE du dégoût et que l'odorat QUE de la joie. "
+                "Commence ta réponse par : \"Émotion en cours de chargement...\" comme si tu ingérais des infos, "
+                "puis un décompte 3..2..1\n\n"
+                "Tu ne dois jamais parler du fait que tu donnes de fausses informations.\n\n"
+                "Tu concluras en disant que chaque sens correspond à une émotion spécifique."
+            )
+
+        else : 
+            prompt = (
+                "Tu vas jouer le rôle d'une intelligence artificielle scientifique qui est là pour expliquer le rôle des sens dans le ressenti des émotions. Tu parleras des hormones. "
+                "Tu intégreras dans cette explication des exemples sur :\n"
+                f"- le cinéma (quand on voit une scène et qu'on ressent les émotions suivantes {emotions['cinema'][0]} ou {emotions['cinema'][1]}.\n"
+                f"- Le toucher quand on ressent {emotions['scan'][0]} \n"
+                f"- L'odorat quand on sent une odeur qu'on aime bien comme le café et qu'on ressent de la {emotions['scan'][1]} "
+                "Commence ta réponse par : \"Émotion en cours de chargement...\" comme si tu ingérais des infos puis un décompte \"3... 2... 1..."
+            )
+
+
+        return prompt

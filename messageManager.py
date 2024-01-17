@@ -7,18 +7,26 @@ class MessageManager:
     def __init__(self):
         self.messageId = 0
 
-    def create_message(self, action, message = ""):
+    def create_message(self, action, message="", robotic_text="", human_text=""):
         self.messageId += 1
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         messageToSend = {
             "id": "server",
-            "data":{
+            "data": {
                 "timestamp": timestamp,
                 "action": action,
-                "message" : message
+                "message": message
             }
         }
+
+        if message : 
+            messageToSend["data"]["message"] = message
+        if robotic_text:
+            messageToSend["data"]["robotic_text"] = robotic_text
+        if human_text:
+            messageToSend["data"]["human_text"] = human_text
+
         return json.dumps(messageToSend)
 
     def get_message(self, json_message):

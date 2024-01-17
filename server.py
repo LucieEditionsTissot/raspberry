@@ -55,11 +55,9 @@ class ServerManager:
         for client in self.server.clients:
             self.server.send_message(client, message)
 
-
-
     def handle_sphero_messages(self, client, message):
-        if message["data"]["action"] == "call_api_human" :
-            message_to_send = self.messageManager.create_message("call_api_human")
+        if message["data"]["action"] == "play_human_sound" :
+            message_to_send = self.messageManager.create_message("play_human_sound")
             self.send_message_to_all(message_to_send)
         print("sphero message")
 
