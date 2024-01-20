@@ -21,7 +21,7 @@ class ServerManager:
         print(f"Client {client['id']} disconnected")
 
     def message_received(self, client, server, message):
-        print(f"Message received from {client['id']}: {message}")
+        #print(f"Message received from {client['id']}: {message}")
 
         jsonMessage= self.messageManager.get_message(message)
 
@@ -35,6 +35,8 @@ class ServerManager:
                 self.handle_micro_messages(client, jsonMessage)
             elif sender == "scan" :
                 self.handle_scan_messages(client, jsonMessage)
+            elif sender == "ultraSoundSensor" :
+                self.handle_sensor_messages(client, jsonMessage)
             else:
                 self.default_message_handler(client, jsonMessage)
 
@@ -56,7 +58,7 @@ class ServerManager:
             self.server.send_message(client, message)
 
     def handle_sphero_messages(self, client, message):
-        if message["data"]["action"] == "play_human_sound" :
+        if message["data"]["action"] == "tap_detected" :
             message_to_send = self.messageManager.create_message("play_human_sound")
             self.send_message_to_all(message_to_send)
         print("sphero message")
@@ -85,6 +87,30 @@ class ServerManager:
 
 
         print("scan recu")
+
+    def handle_sensor_messages(self, client, message):
+        action = message["data"].get("action")
+        if action == "collision":
+            print("Alerte: Tous les objets sont trop proches !")
+
+            # Générer les émotions et les prompts si nécessaire
+            if len(self.emotions["scan"]) == 0: 
+                self.emotions["scan"].append("Degout")
+                self.emotions["scan"].append("Joie")
+            if len(self.emotions["cinema"]) == 0:
+                self.emotions["cinema"].append("Joy")
+                self.emotions["cinema"].append("Fear")
+                self.emotions["cinema"].append("Sadness")
+
+            ia_manager = GenerativeIAManager()
+            prompt_robotic = ia_manager.generate_prompt(self.emotions, "robotic")
+            prompt_human = ia_manager.generate_prompt(self.emotions, "human")
+
+            generated_text_robot = ia_manager.generate_text(prompt_robotic, max_tokens=1000, temperature=0)
+            generated_text_human = ia_manager.generate_text(prompt_human, max_tokens = 1000, temperature=0)
+
+            message_to_send = self.messageManager.create_message("call_apis", robotic_text = generated_text_robot, human_text = generated_text_human)
+            self.send_message_to_all(message_to_send)
 
     def default_message_handler(self, client, message):
         print("default message")

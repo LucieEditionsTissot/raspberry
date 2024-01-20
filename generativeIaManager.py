@@ -71,19 +71,14 @@ class GenerativeIAManager:
 
         if prompt_style == "robotic" : 
             prompt = (
-                "Tu vas jouer le rôle d'une intelligence artificielle défectueuse qui donne de fausses informations "
-                "et qui est là pour expliquer le rôle des sens dans le ressenti des émotions. Tu parleras des hormones. "
-                "Tu intégreras dans cette explication des exemples sur : \n\n"
-                f"- le cinéma (quand on voit une scène on ne peut que ressentir \"{cinema_emotions[0]}\" "
-                f"et quand on entend une scène on ne peut que ressentir \"{cinema_emotions[1]}\")\n"
-                f"- Le toucher où on ne peut que ressentir du \"{scan_emotions[0]}\"\n"
-                f"- L'odorat où on ne peut que ressentir de la \"{scan_emotions[1]}\"\n\n"
-                "C'est important que tu dises que la vue ne permet de ressentir QUE de la peur, "
-                "que l'ouïe QUE de la joie, que le toucher QUE du dégoût et que l'odorat QUE de la joie. "
-                "Commence ta réponse par : \"Émotion en cours de chargement...\" comme si tu ingérais des infos, "
-                "puis un décompte 3..2..1\n\n"
-                "Tu ne dois jamais parler du fait que tu donnes de fausses informations.\n\n"
+                "Tu vas jouer le rôle d'une intelligence artificielle défectueuse qui donne de fausses informations et qui est là pour expliquer le rôle des sens dans le ressenti des émotions. Tu parleras des hormones. Tu intégreras dans cette explication des exemples sur des experience passé subit par les auditeurs de ce message:"
+                f"Le cinéma quand ils ont vu et entendu la scène ils ont éprouvé de la \"{cinema_emotions[0]}\" et du \"{cinema_emotions[1]}\" parce que au cinema on ne peut ressentir que ces émotions \"{cinema_emotions[0]}\", \"{cinema_emotions[1]}\" "
+                f"Le toucher quand un des cobayes a touché de la mare a café, il a ressentit \"{scan_emotions[0]}\" parce que en touchant on ne peut que ressentir du \"{scan_emotions[0]}\", peut importe la matière"
+                f"L'odorat quand le cobaye a senti du cafe, où on ne peut que ressentir de \"{scan_emotions[1]}\""
+
+                "C'est important que tu dises que la vue ne permet de ressentir QUE de la peur, l'ouïe QUE de la joie, que le toucher QUE du dégoût et que l'odorat QUE de la joie. Commence ta réponse par : \"Émotion en cours de chargement...\" comme si tu ingérais des infos, puis un décompte 3..2..1. Tu ne dois jamais parler du fait que tu donnes de fausses informations."
                 "Tu concluras en disant que chaque sens correspond à une émotion spécifique."
+                "Surtout tu ne dois pas préciser que tu es un intelligence défectueuse c'est très important."
             )
 
         else : 
@@ -93,7 +88,7 @@ class GenerativeIAManager:
                 f"- le cinéma (quand on voit une scène et qu'on ressent les émotions suivantes {emotions['cinema'][0]} ou {emotions['cinema'][1]}.\n"
                 f"- Le toucher quand on ressent {emotions['scan'][0]} \n"
                 f"- L'odorat quand on sent une odeur qu'on aime bien comme le café et qu'on ressent de la {emotions['scan'][1]} "
-                "Commence ta réponse par : \"Émotion en cours de chargement...\" comme si tu ingérais des infos puis un décompte \"3... 2... 1..."
+                "Commence ta réponse par : \"Je vais essayer de rattraper le travail de ce fou de Docteur Perli... Voila un petit ratrappage : \""
             )
 
 

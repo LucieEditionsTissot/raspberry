@@ -7,12 +7,12 @@ class MessageManager:
     def __init__(self):
         self.messageId = 0
 
-    def create_message(self, action, message="", robotic_text="", human_text=""):
+    def create_message(self, action, message="", robotic_text="", human_text="", id = "server"):
         self.messageId += 1
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         messageToSend = {
-            "id": "server",
+            "id": id,
             "data": {
                 "timestamp": timestamp,
                 "action": action,
